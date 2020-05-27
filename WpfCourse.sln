@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfCourse", "WpfCourse\WpfC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculator", "Calculator\Calculator.csproj", "{54133B80-AD89-469D-B717-E30140D05ED0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactApp", "ContactApp\ContactApp.csproj", "{7C738DA0-5947-4F2C-93DA-8901BD486CD3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{54133B80-AD89-469D-B717-E30140D05ED0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54133B80-AD89-469D-B717-E30140D05ED0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54133B80-AD89-469D-B717-E30140D05ED0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C738DA0-5947-4F2C-93DA-8901BD486CD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C738DA0-5947-4F2C-93DA-8901BD486CD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C738DA0-5947-4F2C-93DA-8901BD486CD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C738DA0-5947-4F2C-93DA-8901BD486CD3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
