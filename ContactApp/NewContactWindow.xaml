@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="NewContactWindow" Height="300" Width="300">
     <Grid>
-        <StackPanel>
+        <StackPanel Margin="10">
             <TextBox x:Name="nameTextbox"
                      Margin="0,0,0,5"/>
             <TextBox x:Name="mailTextbox"

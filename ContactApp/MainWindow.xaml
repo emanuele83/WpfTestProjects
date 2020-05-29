@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ContactApp"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+    <StackPanel Margin="10">
+        <Button x:Name="newContactButton" Click="NewContactButton_Click" Content="New Contact"/>
+    </StackPanel>
 </Window>

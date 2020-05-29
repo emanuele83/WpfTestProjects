@@ -24,5 +24,11 @@ namespace ContactApp
         {
             InitializeComponent();
         }
+
+        private void NewContactButton_Click(object sender, RoutedEventArgs e)
+        {
+            NewContactWindow newContact = new NewContactWindow();
+            newContact.ShowDialog();
+        }
     }
 }
