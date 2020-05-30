@@ -34,11 +34,8 @@ namespace ContactApp
                 Email = mailTextbox.Text,
                 Phone = phoneTextbox.Text
             };
-            string databaseName = "Contacts.db";
-            string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            string databasePath = System.IO.Path.Combine(folderPath, databaseName);
 
-            using (SQLiteConnection connection = new SQLiteConnection(databasePath))
+            using (SQLiteConnection connection = new SQLiteConnection(App.DatabasePath))
             {
                 connection.CreateTable<Contact>();
                 connection.Insert(contact);
