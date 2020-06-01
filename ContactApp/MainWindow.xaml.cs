@@ -64,8 +64,8 @@ namespace ContactApp
 
             if (contact != null)
             {
-                ContactDetails newContact = new ContactDetails(contact);
-                newContact.ShowDialog();
+                ContactDetails contactDetails = new ContactDetails(contact);
+                contactDetails.ShowDialog();
 
                 ReadContacts();
             }
