@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using LandmarkAI.Classes;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -44,9 +45,11 @@ namespace LandmarkAI
 
         private async void MakePredictionAsync(string fileName)
         {
+            // azure configurations
             string azureUrl = "https://northeurope.api.cognitive.microsoft.com/customvision/v3.0/Prediction/f71133ab-4c38-4c19-8180-3119451cd77e/classify/iterations/Iteration1Landmarks/image";
             string predictionKey = "86126490be46450ebee447ffe219c034";
             string contentType = "application/octet-stream";
+            // collect bytes
             var fileData = File.ReadAllBytes(fileName);
 
 
@@ -58,6 +61,10 @@ namespace LandmarkAI
                 {
                     content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(contentType);
                     var response = await client.PostAsync(azureUrl, content);
+
+                    var result = await response.Content.ReadAsStringAsync();
+                    List<Prediction> predictions = (Newtonsoft.Json.JsonConvert.DeserializeObject<CustomVision>(result)).predictions.ToList();
+                    predictionList.ItemsSource = predictions;
                 }
             }
         }

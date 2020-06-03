@@ -7,10 +7,26 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
         <StackPanel>
             <Button x:Name="selectImageButton" Content="Select Image" 
                     HorizontalAlignment="Center" Click="SelectImageButton_Click"/>
             <Image x:Name="selectedImage"/>
         </StackPanel>
+        <ListView Grid.Column="1" x:Name="predictionList" Width="220" Margin="5">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Tag"
+                                    Width="100"
+                                    DisplayMemberBinding="{Binding tagName}"/>
+                    <GridViewColumn Header="Prediction"
+                                    Width="100"
+                                    DisplayMemberBinding="{Binding Path=probability, StringFormat=P2}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Window>
