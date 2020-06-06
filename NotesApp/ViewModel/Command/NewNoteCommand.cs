@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NotesApp.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,11 @@ namespace NotesApp.ViewModel.Command
     {
         public NoteViewModel NoteViewModel { get; set; }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler CanExecuteChanged
+        {
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
+        }
 
         public NewNoteCommand(NoteViewModel viewModel)
         {
@@ -20,12 +25,14 @@ namespace NotesApp.ViewModel.Command
 
         public bool CanExecute(object parameter)
         {
-            return true;
+            Notebook notebook = parameter as Notebook;
+            return notebook != null;
         }
 
         public void Execute(object parameter)
         {
-            // TODO
+            Notebook notebook = parameter as Notebook;
+            NoteViewModel.CreateNote(notebook.Id);
         }
     }
 }

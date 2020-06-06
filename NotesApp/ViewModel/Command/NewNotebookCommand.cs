@@ -25,7 +25,7 @@ namespace NotesApp.ViewModel.Command
 
         public void Execute(object parameter)
         {
-            // TODO
+            NoteViewModel.CreateNotbook();
         }
     }
 }
