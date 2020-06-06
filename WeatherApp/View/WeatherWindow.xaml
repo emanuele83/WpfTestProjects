@@ -22,7 +22,7 @@
                     Command="{Binding SearchCityCommand}"
                     CommandParameter="{Binding Query}" />
             <ListView ItemsSource="{Binding Cities}"
-                      SelectedValue="{Binding SelectedCity}">
+                      SelectedItem="{Binding SelectedCity}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid>

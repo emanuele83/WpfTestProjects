@@ -43,12 +43,18 @@ namespace WeatherApp.ViewModel
 
         public City SelectedCity
         {
-            get { return selectedCity; }
+            get
+            {
+                return selectedCity;
+            }
             set
             {
-                selectedCity = value;
-                OnPropertyChanged("City");
-                GetCurrentConditionsAsync();
+                if (value != null)
+                {
+                    selectedCity = value;
+                    OnPropertyChanged("SelectedCity");
+                    GetCurrentConditionsAsync();
+                }
             }
         }
 
@@ -56,27 +62,27 @@ namespace WeatherApp.ViewModel
 
         public WeatherViewModel()
         {
-            //// with this, the evaluation of inner code is used only in design mode, not at run time
-            //// useful to evaluate binding and graphics
-            //if (DesignerProperties.GetIsInDesignMode(new System.Windows.DependencyObject()))
-            //{
-            //    SelectedCity = new City
-            //    {
-            //        Key = "123456",
-            //        LocalizedName = "New York"
-            //    };
-            //    CurrentConditions = new CurrentConditions
-            //    {
-            //        WeatherText = "Sunny",
-            //        Temperature = new Temperature
-            //        {
-            //            Metric = new Units
-            //            {
-            //                Value = "21"
-            //            }
-            //        }
-            //    };
-            //}
+            // with this, the evaluation of inner code is used only in design mode, not at run time
+            // useful to evaluate binding and graphics
+            if (DesignerProperties.GetIsInDesignMode(new System.Windows.DependencyObject()))
+            {
+                SelectedCity = new City
+                {
+                    //Key = "123456",
+                    LocalizedName = "New York"
+                };
+                CurrentConditions = new CurrentConditions
+                {
+                    WeatherText = "Sunny",
+                    Temperature = new Temperature
+                    {
+                        Metric = new Units
+                        {
+                            Value = "21"
+                        }
+                    }
+                };
+            }
 
             SearchCityCommand = new SearchCityCommand(this);
             Cities = new ObservableCollection<City>();
@@ -92,8 +98,11 @@ namespace WeatherApp.ViewModel
 
         private async void GetCurrentConditionsAsync()
         {
-            Query = string.Empty;
-            CurrentConditions = await AccuWeatherHelper.GetCurrentConditionsAsync(SelectedCity.Key);
+            // do not try call during design mode
+            if (!DesignerProperties.GetIsInDesignMode(new System.Windows.DependencyObject()))
+            {
+                CurrentConditions = await AccuWeatherHelper.GetCurrentConditionsAsync(SelectedCity.Key);
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
