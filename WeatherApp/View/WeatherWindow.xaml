@@ -5,10 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WeatherApp.View"
         xmlns:vm="clr-namespace:WeatherApp.ViewModel"
+        xmlns:cv="clr-namespace:WeatherApp.ViewModel.Converters"
         mc:Ignorable="d"
         Title="WeatherWindow" Height="600" Width="450">
     <Window.Resources>
         <vm:WeatherViewModel x:Key="vm"/>
+        <cv:BoolToRainConverter x:Key="BoolToRain"/>
     </Window.Resources>
     <Grid DataContext="{StaticResource vm}">
         <Grid.RowDefinitions>
@@ -43,6 +45,8 @@
                            Foreground="White" FontSize="20" Margin="20 0"/>
                 <TextBlock Foreground="White" FontSize="18" Margin="20 0"
                            Text="{Binding WeatherText}"/>
+                <TextBlock Foreground="White" FontSize="16" Margin="20 0"
+                           Text="{Binding HasPrecipitation, Converter={StaticResource BoolToRain}}"/>
             </StackPanel>
             <TextBlock Grid.Column="1" VerticalAlignment="Center" Foreground="White"
                        FontSize="30" Margin="20 0" 
