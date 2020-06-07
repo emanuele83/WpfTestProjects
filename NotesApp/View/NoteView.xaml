@@ -20,6 +20,11 @@
                 <MenuItem Header="Exit" Click="MenuItem_Click" />
             </MenuItem>
         </Menu>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <TextBlock x:Name="statusTextBlock"/>
+            </StatusBarItem>
+        </StatusBar>
         <ListView Width="140" DockPanel.Dock="Left"
                   ItemsSource="{Binding Notebooks}"
                   SelectedItem="{Binding SelectedNotebook}">
@@ -40,9 +45,27 @@
         </ListView>
         <ToolBarTray DockPanel.Dock="Top">
             <ToolBar>
-                <Button Content="Speech"/>
+                <Button Content="Speech"
+                        x:Name="speechButton"
+                        Click="SpeechButton_Click"/>
+                <ToggleButton Content="B" FontWeight="Bold"
+                        x:Name="boldButton"
+                        Click="BoldButton_Click"/>
+                <ToggleButton Content="I" FontStyle="Italic"
+                        x:Name="italicButton" />
+                <ToggleButton x:Name="underlinedButton"
+                              Click="UnderlinedButton_Click">
+                    <TextBlock Text="U" TextDecorations="Underline" />
+                </ToggleButton>
+                <Button>
+                    <TextBlock Text="Test" TextDecorations="Strikethrough"/>
+                </Button>
             </ToolBar>
         </ToolBarTray>
-        <Grid/>
+        <Grid>
+            <RichTextBox x:Name="noteText"
+                         TextChanged="NoteText_TextChanged"
+                         SelectionChanged="NoteText_SelectionChanged"/>
+        </Grid>
     </DockPanel>
 </Window>
