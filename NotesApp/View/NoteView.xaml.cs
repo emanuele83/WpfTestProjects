@@ -41,6 +41,9 @@ namespace NotesApp.View
             //speech.LoadGrammar(grammar);
             //speech.SetInputToDefaultAudioDevice();
             //speech.SpeechRecognized += Speech_SpeechRecognized;
+
+            fontFamilyComboBox.ItemsSource = Fonts.SystemFontFamilies.OrderBy(f => f.Source);
+            fontSizeComboBox.ItemsSource = new List<double> { 8, 9, 10, 11, 12, 16, 20 };
         }
 
         //private void Speech_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
@@ -78,6 +81,9 @@ namespace NotesApp.View
 
             var selectedTextDecoration = noteText.Selection.GetPropertyValue(Inline.TextDecorationsProperty);
             underlinedButton.IsChecked = (selectedTextDecoration != DependencyProperty.UnsetValue) && (selectedTextDecoration.Equals(TextDecorations.Underline));
+
+            fontFamilyComboBox.SelectedItem = noteText.Selection.GetPropertyValue(Inline.FontFamilyProperty);
+            fontSizeComboBox.Text = (noteText.Selection.GetPropertyValue(Inline.FontSizeProperty)).ToString();
         }
 
         private void NoteText_TextChanged(object sender, TextChangedEventArgs e)
@@ -112,6 +118,19 @@ namespace NotesApp.View
                 (noteText.Selection.GetPropertyValue(Inline.TextDecorationsProperty) as TextDecorationCollection).TryRemove(TextDecorations.Underline, out textDecorations);
                 noteText.Selection.ApplyPropertyValue(Inline.TextDecorationsProperty, textDecorations);
             }
+        }
+
+        private void FontFamilyComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(fontFamilyComboBox.SelectedItem != null)
+            {
+                noteText.Selection.ApplyPropertyValue(Inline.FontFamilyProperty, fontFamilyComboBox.SelectedItem);
+            }
+        }
+
+        private void FontSizeComboBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            noteText.Selection.ApplyPropertyValue(Inline.FontSizeProperty, fontSizeComboBox.Text);
         }
     }
 }
