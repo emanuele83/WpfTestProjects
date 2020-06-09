@@ -23,5 +23,17 @@ namespace NotesApp.View
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            loginStack.Visibility = Visibility.Collapsed;
+            registerStack.Visibility = Visibility.Visible;
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            loginStack.Visibility = Visibility.Visible;
+            registerStack.Visibility = Visibility.Collapsed;
+        }
     }
 }

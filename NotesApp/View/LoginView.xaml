@@ -4,9 +4,46 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NotesApp.View"
+        xmlns:vm="clr-namespace:NotesApp.ViewModel"
         mc:Ignorable="d"
-        Title="LoginView" Height="450" Width="800">
+        Title="LoginView" Height="350" Width="400">
+    <Window.Resources>
+        <vm:LoginViewModel x:Key="vm"/>
+    </Window.Resources>
     <Grid>
-        
+        <StackPanel DataContext="{StaticResource vm}" VerticalAlignment="Center"
+                    x:Name="loginStack">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Email" VerticalAlignment="Center" Margin="10" Width="100"
+                           TextAlignment="Right"/>
+                <TextBox x:Name="LoginTextBox" Margin="5"
+                         Text="{Binding User.Email}" Width="200" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Password" VerticalAlignment="Center" Margin="10" Width="100"
+                           TextAlignment="Right"/>
+                <!--password box is not bindable... to study how t use it-->
+                <!--<PasswordBox x:Name="PasswordTextBox" Margin="5"/>-->
+                <TextBox x:Name="PasswordTextBox" Margin="5"
+                         Text="{Binding User.Password}" Width="200" />
+            </StackPanel>
+            <Button Content="Login" Command="{Binding LoginCommand}"
+                    CommandParameter="{Binding User}" Margin="5"/>
+            <Button Content="No Account" HorizontalAlignment="Right" Click="Button_Click"  Margin="5"/>
+        </StackPanel>
+        <StackPanel DataContext="{StaticResource vm}" VerticalAlignment="Center"
+                    Visibility="Collapsed" x:Name="registerStack">
+            <TextBox x:Name="nameTextBox" Margin="5"
+                     Text="{Binding User.Name}" />
+            <TextBox x:Name="LastTextBox" Margin="5"
+                     Text="{Binding User.LastName}" />
+            <TextBox x:Name="emailTextBox" Margin="5"
+                     Text="{Binding User.Email}" />
+            <TextBox x:Name="pwdTextBox" Margin="5"
+                     Text="{Binding User.Password}" />
+            <Button Content="Register" Command="{Binding RegisterCommand}"
+                    CommandParameter="{Binding User}" Margin="5"/>
+            <Button Content="Already Account" HorizontalAlignment="Right" Click="Button_Click_1"  Margin="5"/>
+        </StackPanel>
     </Grid>
 </Window>
