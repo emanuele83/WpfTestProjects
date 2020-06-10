@@ -26,15 +26,19 @@ namespace NotesApp.ViewModel.Command
         public bool CanExecute(object parameter)
         {
             User user = parameter as User;
-            if (string.IsNullOrEmpty(user.Name))
-                return false;
-            if (string.IsNullOrEmpty(user.LastName))
-                return false;
-            if (string.IsNullOrEmpty(user.Email))
-                return false;
-            if (string.IsNullOrEmpty(user.Password))
-                return false;
-            return true;
+            if (user != null)
+            {
+                if (string.IsNullOrEmpty(user.Name))
+                    return false;
+                if (string.IsNullOrEmpty(user.LastName))
+                    return false;
+                if (string.IsNullOrEmpty(user.Email))
+                    return false;
+                if (string.IsNullOrEmpty(user.Password))
+                    return false;
+                return true;
+            }
+            return false;
         }
 
         public void Execute(object parameter)

@@ -11,16 +11,12 @@ namespace NotesApp.ViewModel
 {
     public class LoginViewModel
     {
-        private User user;
-
-        public User User
-        {
-            get { return user; }
-            set { user = value; }
-        }
+        public User User { get; set; } = new User();
 
         public RegisterCommand RegisterCommand { get; set; }
         public LoginCommand LoginCommand { get; set; }
+
+        public event EventHandler HasLoggedIn;
 
         public LoginViewModel()
         {
@@ -28,11 +24,25 @@ namespace NotesApp.ViewModel
             LoginCommand = new LoginCommand(this);
         }
 
+        public void CleanUserData()
+        {
+            User.Email = string.Empty;
+            User.Password = string.Empty;
+            User.Name = string.Empty;
+            User.LastName = string.Empty;
+        }
+
         public void Login()
         {
             using(SQLite.SQLiteConnection conn = new SQLite.SQLiteConnection(DatabaseHelper.dbFile))
             {
-
+                conn.CreateTable<User>();
+                var user = conn.Table<User>().Where(u => u.Email == User.Email).FirstOrDefault();
+                if(user != null && user.Password == User.Password)
+                {
+                    App.UserId = user.Id;
+                    HasLoggedIn?.Invoke(this, new EventArgs());
+                }
             }
         }
 
@@ -40,7 +50,21 @@ namespace NotesApp.ViewModel
         {
             using (SQLite.SQLiteConnection conn = new SQLite.SQLiteConnection(DatabaseHelper.dbFile))
             {
-
+                conn.CreateTable<User>();
+                try
+                {
+                    var res = DatabaseHelper.Insert(User);
+                    if (res)
+                    {
+                        App.UserId = User.Id;
+                        HasLoggedIn?.Invoke(this, new EventArgs());
+                    }
+                }catch(Exception e)
+                {
+                    // manage, for example, registering same email...
+                    // add password recovery...
+                    App.UserId = 0;
+                }
             }
         }
     }

@@ -13,6 +13,8 @@ namespace NotesApp.ViewModel
 {
     public class NoteViewModel
     {
+        public bool IsEditing { get; set; }
+
         public ObservableCollection<Notebook> Notebooks { get; set; }
 
         private Notebook selectedNotebook;
@@ -42,6 +44,8 @@ namespace NotesApp.ViewModel
 
         public NoteViewModel()
         {
+            IsEditing = false;
+
             NewNotebookCommand = new NewNotebookCommand(this);
             NewNoteCommand = new NewNoteCommand(this);
 
@@ -55,7 +59,8 @@ namespace NotesApp.ViewModel
         {
             Notebook newNotebook = new Notebook()
             {
-                Name = "New notebook"
+                Name = "New notebook",
+                UserId = App.UserId
             };
             DatabaseHelper.Insert(newNotebook);
 
@@ -82,7 +87,7 @@ namespace NotesApp.ViewModel
             using(SQLite.SQLiteConnection conn = new SQLite.SQLiteConnection(DatabaseHelper.dbFile))
             {
                 conn.CreateTable<Notebook>();
-                conn.Table<Notebook>().ToList().ForEach(n => Notebooks.Add(n));
+                conn.Table<Notebook>().Where(n => n.UserId == App.UserId).ToList().ForEach(n => Notebooks.Add(n));
             }
         }
         public void ReadNotes()

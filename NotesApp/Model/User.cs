@@ -47,7 +47,7 @@ namespace NotesApp.Model
         }
 
         private string email;
-
+        [Unique, MaxLength(50)]
         public string Email
         {
             get { return email; }

@@ -67,6 +67,17 @@ namespace NotesApp.View
             //}
         }
 
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+
+            if(App.UserId == 0)
+            {
+                LoginView loginView = new LoginView();
+                loginView.ShowDialog();
+            }
+        }
+
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();

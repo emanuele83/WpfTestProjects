@@ -90,6 +90,7 @@
     <Compile Include="ViewModel\Command\NewNotebookCommand.cs" />
     <Compile Include="ViewModel\Command\NewNoteCommand.cs" />
     <Compile Include="ViewModel\Command\RegisterCommand.cs" />
+    <Compile Include="ViewModel\Converter\BoolToVisibilityConverter.cs" />
     <Compile Include="ViewModel\Helper\DatabaseHelper.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>

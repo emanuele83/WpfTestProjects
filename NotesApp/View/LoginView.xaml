@@ -7,17 +7,18 @@
         xmlns:vm="clr-namespace:NotesApp.ViewModel"
         mc:Ignorable="d"
         Title="LoginView" Height="350" Width="400">
-    <Window.Resources>
+    <!--<Window.Resources>
         <vm:LoginViewModel x:Key="vm"/>
-    </Window.Resources>
-    <Grid>
-        <StackPanel DataContext="{StaticResource vm}" VerticalAlignment="Center"
+    </Window.Resources>-->
+    <!--DataContext="{StaticResource vm}"-->
+    <Grid x:Name="loginGrid">
+        <StackPanel VerticalAlignment="Center"
                     x:Name="loginStack">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Email" VerticalAlignment="Center" Margin="10" Width="100"
                            TextAlignment="Right"/>
                 <TextBox x:Name="LoginTextBox" Margin="5"
-                         Text="{Binding User.Email}" Width="200" />
+                         Text="{Binding User.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Password" VerticalAlignment="Center" Margin="10" Width="100"
@@ -25,22 +26,22 @@
                 <!--password box is not bindable... to study how t use it-->
                 <!--<PasswordBox x:Name="PasswordTextBox" Margin="5"/>-->
                 <TextBox x:Name="PasswordTextBox" Margin="5"
-                         Text="{Binding User.Password}" Width="200" />
+                         Text="{Binding User.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" />
             </StackPanel>
             <Button Content="Login" Command="{Binding LoginCommand}"
                     CommandParameter="{Binding User}" Margin="5"/>
             <Button Content="No Account" HorizontalAlignment="Right" Click="Button_Click"  Margin="5"/>
         </StackPanel>
-        <StackPanel DataContext="{StaticResource vm}" VerticalAlignment="Center"
+        <StackPanel VerticalAlignment="Center"
                     Visibility="Collapsed" x:Name="registerStack">
             <TextBox x:Name="nameTextBox" Margin="5"
-                     Text="{Binding User.Name}" />
+                     Text="{Binding User.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <TextBox x:Name="LastTextBox" Margin="5"
-                     Text="{Binding User.LastName}" />
+                     Text="{Binding User.LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <TextBox x:Name="emailTextBox" Margin="5"
-                     Text="{Binding User.Email}" />
+                     Text="{Binding User.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <TextBox x:Name="pwdTextBox" Margin="5"
-                     Text="{Binding User.Password}" />
+                     Text="{Binding User.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <Button Content="Register" Command="{Binding RegisterCommand}"
                     CommandParameter="{Binding User}" Margin="5"/>
             <Button Content="Already Account" HorizontalAlignment="Right" Click="Button_Click_1"  Margin="5"/>
