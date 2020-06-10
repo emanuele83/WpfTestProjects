@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:int="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:local="clr-namespace:NotesApp.View"
         xmlns:vm="clr-namespace:NotesApp.ViewModel"
         xmlns:uc="clr-namespace:NotesApp.View.CustomControl"
@@ -37,10 +38,17 @@
                     <Grid>
                         <uc:NotebookUserControl Notebook="{Binding}"/>
                         <TextBox Text="{Binding Name, Mode=TwoWay}"
-                                   Visibility="{Binding Source={StaticResource vm}, Path=IsEditing, Converter={StaticResource boolToVisibility}}"/>
+                                   Visibility="{Binding Source={StaticResource vm}, Path=IsEditing, Converter={StaticResource boolToVisibility}}">
+                            <int:Interaction.Triggers>
+                                <int:EventTrigger EventName="LostFocus">
+                                    <int:InvokeCommandAction Command="{Binding Source={StaticResource vm}, Path=StopEditCommand}"
+                                                             CommandParameter="{Binding}"/>
+                                </int:EventTrigger>
+                            </int:Interaction.Triggers>
+                        </TextBox>
                         <Grid.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Rename"/>
+                                <MenuItem Header="Rename" Command="{Binding Source={StaticResource vm}, Path=StartEditCommand}"/>
                             </ContextMenu>
                         </Grid.ContextMenu>
                     </Grid>

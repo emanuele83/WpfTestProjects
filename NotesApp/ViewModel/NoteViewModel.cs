@@ -4,6 +4,7 @@ using NotesApp.ViewModel.Helper;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,9 +12,20 @@ using System.Windows.Media;
 
 namespace NotesApp.ViewModel
 {
-    public class NoteViewModel
+    public class NoteViewModel : INotifyPropertyChanged
     {
-        public bool IsEditing { get; set; }
+        private bool isEditing;
+
+        public bool IsEditing
+        {
+            get { return isEditing; }
+            set
+            {
+                isEditing = value;
+                OnPropertyChanged("IsEditing");
+            }
+        }
+
 
         public ObservableCollection<Notebook> Notebooks { get; set; }
 
@@ -33,6 +45,8 @@ namespace NotesApp.ViewModel
 
         private Note selectedNote;
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public Note SelectedNote
         {
             get { return selectedNote; }
@@ -41,6 +55,8 @@ namespace NotesApp.ViewModel
         
         public NewNotebookCommand NewNotebookCommand { get; set; }
         public NewNoteCommand NewNoteCommand { get; set; }
+        public StartEditCommand StartEditCommand { get; set; }
+        public StopEditCommand StopEditCommand { get; set; }
 
         public NoteViewModel()
         {
@@ -48,11 +64,18 @@ namespace NotesApp.ViewModel
 
             NewNotebookCommand = new NewNotebookCommand(this);
             NewNoteCommand = new NewNoteCommand(this);
+            StartEditCommand = new StartEditCommand(this);
+            StopEditCommand = new StopEditCommand(this);
 
             Notebooks = new ObservableCollection<Notebook>();
             Notes = new ObservableCollection<Note>();
 
             ReadNotebooks();
+        }
+
+        public void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public void CreateNotbook()
@@ -101,6 +124,21 @@ namespace NotesApp.ViewModel
                     conn.Table<Note>().Where(n => n.NotebookId == SelectedNotebook.Id).ToList().ForEach(n => Notes.Add(n));
                 }
             }
+        }
+
+        public void StartEditing()
+        {
+            IsEditing = true;
+        }
+
+        public void StopEditing(Notebook notebook)
+        {
+            if(notebook != null)
+            {
+                DatabaseHelper.Update(notebook);
+                ReadNotebooks();
+            }
+            IsEditing = false;
         }
     }
 }
