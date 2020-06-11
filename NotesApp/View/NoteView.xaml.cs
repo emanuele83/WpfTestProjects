@@ -1,5 +1,7 @@
-﻿using System;
+﻿using NotesApp.ViewModel;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Speech.Recognition;
 using System.Text;
@@ -24,9 +26,15 @@ namespace NotesApp.View
     {
         // not possible to use speech recogn in WIN 7....
         //SpeechRecognitionEngine speech;
+        NoteViewModel noteViewModel;
+
         public NoteView()
         {
             InitializeComponent();
+
+            noteViewModel = new NoteViewModel();
+            DataContext = noteViewModel;
+            noteViewModel.NoteChanged += NoteViewModel_NoteChanged;
 
             // not possible to use speech recogn in WIN 7....
             //var currentCulture = (from r in SpeechRecognitionEngine.InstalledRecognizers()
@@ -44,6 +52,19 @@ namespace NotesApp.View
 
             fontFamilyComboBox.ItemsSource = Fonts.SystemFontFamilies.OrderBy(f => f.Source);
             fontSizeComboBox.ItemsSource = new List<double> { 8, 9, 10, 11, 12, 16, 20 };
+        }
+
+        private void NoteViewModel_NoteChanged(object sender, NoteChangedEventArgs e)
+        {
+            noteText.Document.Blocks.Clear();
+            if (!string.IsNullOrEmpty(noteViewModel.SelectedNote.FileLocation))
+            {
+                using (FileStream fileStream = new FileStream(noteViewModel.SelectedNote.FileLocation, FileMode.Open))
+                {
+                    var range = new TextRange(noteText.Document.ContentStart, noteText.Document.ContentEnd);
+                    range.Load(fileStream, DataFormats.Rtf);
+                }
+            }
         }
 
         //private void Speech_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
@@ -71,11 +92,11 @@ namespace NotesApp.View
         {
             base.OnActivated(e);
 
-            if(App.UserId == 0)
-            {
-                LoginView loginView = new LoginView();
-                loginView.ShowDialog();
-            }
+            //if(App.UserId == 0)
+            //{
+            //    LoginView loginView = new LoginView();
+            //    loginView.ShowDialog();
+            //}
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -142,6 +163,18 @@ namespace NotesApp.View
         private void FontSizeComboBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             noteText.Selection.ApplyPropertyValue(Inline.FontSizeProperty, fontSizeComboBox.Text);
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            var filePath = System.IO.Path.Combine(Environment.CurrentDirectory, $"{noteViewModel.SelectedNote.Id}.rtf");
+            noteViewModel.SelectedNote.FileLocation = filePath;
+            using (FileStream fileStream = new FileStream(noteViewModel.SelectedNote.FileLocation, FileMode.Create))
+            {
+                var range = new TextRange(noteText.Document.ContentStart, noteText.Document.ContentEnd);
+                range.Save(fileStream, DataFormats.Rtf);
+            }
+            noteViewModel.UpdateNote();
         }
     }
 }

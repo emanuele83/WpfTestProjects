@@ -8,13 +8,15 @@
         xmlns:vm="clr-namespace:NotesApp.ViewModel"
         xmlns:uc="clr-namespace:NotesApp.View.CustomControl"
         xmlns:cv="clr-namespace:NotesApp.ViewModel.Converter"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
         Title="NoteView" Height="450" Width="800">
     <Window.Resources>
         <vm:NoteViewModel x:Key="vm"/>
         <cv:BoolToVisibilityConverter x:Key="boolToVisibility"/>
     </Window.Resources>
-    <DockPanel DataContext="{StaticResource vm}">
+    <!--DataContext="{StaticResource vm}"-->
+    <DockPanel >
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
                 <MenuItem Header="New Notebook" Command="{Binding NewNotebookCommand}"/>
@@ -39,12 +41,12 @@
                         <uc:NotebookUserControl Notebook="{Binding}"/>
                         <TextBox Text="{Binding Name, Mode=TwoWay}"
                                    Visibility="{Binding Source={StaticResource vm}, Path=IsEditing, Converter={StaticResource boolToVisibility}}">
-                            <int:Interaction.Triggers>
-                                <int:EventTrigger EventName="LostFocus">
-                                    <int:InvokeCommandAction Command="{Binding Source={StaticResource vm}, Path=StopEditCommand}"
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="LostFocus">
+                                    <i:InvokeCommandAction Command="{Binding Source={StaticResource vm}, Path=StopEditCommand}"
                                                              CommandParameter="{Binding}"/>
-                                </int:EventTrigger>
-                            </int:Interaction.Triggers>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
                         </TextBox>
                         <Grid.ContextMenu>
                             <ContextMenu>
@@ -104,6 +106,9 @@
                           Width="50"
                           IsEditable="True"
                           TextBoxBase.TextChanged="FontSizeComboBox_TextChanged"/>
+                <Button Content="Save"
+                        x:Name="saveButton"
+                        Click="SaveButton_Click"/>
             </ToolBar>
         </ToolBarTray>
         <Grid>

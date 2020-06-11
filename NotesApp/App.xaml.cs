@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NotesApp.View;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -14,5 +15,16 @@ namespace NotesApp
     public partial class App : Application
     {
         public static int UserId = 0;
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            //if (App.UserId == 0)
+            //{
+            //    LoginView loginView = new LoginView();
+            //    loginView.ShowDialog();
+            //}
+        }
     }
 }

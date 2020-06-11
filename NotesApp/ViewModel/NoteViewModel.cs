@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using System.Windows.Media;
 
 namespace NotesApp.ViewModel
@@ -25,7 +26,6 @@ namespace NotesApp.ViewModel
                 OnPropertyChanged("IsEditing");
             }
         }
-
 
         public ObservableCollection<Notebook> Notebooks { get; set; }
 
@@ -45,18 +45,43 @@ namespace NotesApp.ViewModel
 
         private Note selectedNote;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public Note SelectedNote
         {
             get { return selectedNote; }
-            set { selectedNote = value; }
+            set
+            {
+                selectedNote = value;
+                //OnPropertyChanged(nameof(selectedNote));
+                if (selectedNote != null)
+                {
+                    NoteChanged(this, new NoteChangedEventArgs(selectedNote.Id));
+                    // load doc
+                }
+            }
         }
-        
+
+        //private TextRange document;
+
+        //public TextRange Document
+        //{
+        //    get
+        //    {
+        //        return document;
+        //    }
+        //    set
+        //    {
+        //        document = value;
+        //    }
+        //}
+
+
         public NewNotebookCommand NewNotebookCommand { get; set; }
         public NewNoteCommand NewNoteCommand { get; set; }
         public StartEditCommand StartEditCommand { get; set; }
         public StopEditCommand StopEditCommand { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler<NoteChangedEventArgs> NoteChanged;
 
         public NoteViewModel()
         {
@@ -140,5 +165,21 @@ namespace NotesApp.ViewModel
             }
             IsEditing = false;
         }
+
+        public void UpdateNote()
+        {
+            if (SelectedNote != null)
+                DatabaseHelper.Update(SelectedNote);
+        }
+    }
+
+    public class NoteChangedEventArgs : EventArgs
+    {
+        public NoteChangedEventArgs(int noteId)
+        {
+            NoteId = noteId;
+        }
+
+        public int NoteId { get; set; }
     }
 }
