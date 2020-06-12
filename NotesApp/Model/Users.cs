@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace NotesApp.Model
 {
-    public class User : INotifyPropertyChanged
+    public class Users : INotifyPropertyChanged
     {
         private int id;
         [PrimaryKey, AutoIncrement]

@@ -11,7 +11,7 @@ namespace NotesApp.ViewModel
 {
     public class LoginViewModel
     {
-        public User User { get; set; } = new User();
+        public Users User { get; set; } = new Users();
 
         public RegisterCommand RegisterCommand { get; set; }
         public LoginCommand LoginCommand { get; set; }
@@ -36,8 +36,8 @@ namespace NotesApp.ViewModel
         {
             using(SQLite.SQLiteConnection conn = new SQLite.SQLiteConnection(DatabaseHelper.dbFile))
             {
-                conn.CreateTable<User>();
-                var user = conn.Table<User>().Where(u => u.Email == User.Email).FirstOrDefault();
+                conn.CreateTable<Users>();
+                var user = conn.Table<Users>().Where(u => u.Email == User.Email).FirstOrDefault();
                 if(user != null && user.Password == User.Password)
                 {
                     App.UserId = user.Id;
@@ -50,7 +50,7 @@ namespace NotesApp.ViewModel
         {
             using (SQLite.SQLiteConnection conn = new SQLite.SQLiteConnection(DatabaseHelper.dbFile))
             {
-                conn.CreateTable<User>();
+                conn.CreateTable<Users>();
                 try
                 {
                     var res = DatabaseHelper.Insert(User);
