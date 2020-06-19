@@ -7,6 +7,54 @@
         xmlns:vm="clr-namespace:NotesApp.ViewModel"
         mc:Ignorable="d"
         Title="LoginView" Height="350" Width="400">
+    <Window.Resources>
+        <Storyboard x:Key="FadeIn" RepeatBehavior="Forever">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="button">
+                <EasingDoubleKeyFrame KeyTime="0" Value="8"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.8" Value="19.200000000000003">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="22"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="button">
+                <EasingDoubleKeyFrame KeyTime="0" Value="150"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.8" Value="335.6">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="382"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="button">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.8" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="button">
+                <EasingDoubleKeyFrame KeyTime="0" Value="30"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.8" Value="4">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </Window.Resources>
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+            <BeginStoryboard Storyboard="{StaticResource FadeIn}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="button1">
+            <BeginStoryboard Storyboard="{StaticResource FadeIn}"/>
+        </EventTrigger>
+    </Window.Triggers>
     <!--<Window.Resources>
         <vm:LoginViewModel x:Key="vm"/>
     </Window.Resources>-->
@@ -28,8 +76,17 @@
                 <TextBox x:Name="PasswordTextBox" Margin="5"
                          Text="{Binding User.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" />
             </StackPanel>
-            <Button Content="Login" Command="{Binding LoginCommand}"
-                    CommandParameter="{Binding User}" Margin="5"/>
+            <Button x:Name="button" Content="Login" Command="{Binding LoginCommand}"
+                    CommandParameter="{Binding User}" Margin="5" Width="382" Height="22" RenderTransformOrigin="0.5,0.5">
+                <Button.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Button.RenderTransform>
+            </Button>
             <Button Content="No Account" HorizontalAlignment="Right" Click="Button_Click"  Margin="5"/>
         </StackPanel>
         <StackPanel VerticalAlignment="Center"
@@ -44,7 +101,7 @@
                      Text="{Binding User.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <Button Content="Register" Command="{Binding RegisterCommand}"
                     CommandParameter="{Binding User}" Margin="5"/>
-            <Button Content="Already Account" HorizontalAlignment="Right" Click="Button_Click_1"  Margin="5"/>
+            <Button x:Name="button1" Content="Already Account" HorizontalAlignment="Right" Click="Button_Click_1"  Margin="5"/>
         </StackPanel>
     </Grid>
 </Window>

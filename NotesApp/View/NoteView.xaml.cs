@@ -34,8 +34,8 @@ namespace NotesApp.View
         {
             InitializeComponent();
 
-            noteViewModel = new NoteViewModel();
-            DataContext = noteViewModel;
+            // a way to get view model from view code behind
+            noteViewModel = this.Resources["vm"] as NoteViewModel;
             noteViewModel.NoteChanged += NoteViewModel_NoteChanged;
 
             // not possible to use speech recogn in WIN 7....
