@@ -1,4 +1,5 @@
-﻿using NotesApp.View;
+﻿using Microsoft.WindowsAzure.MobileServices;
+using NotesApp.View;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -14,7 +15,8 @@ namespace NotesApp
     /// </summary>
     public partial class App : Application
     {
-        public static int UserId = 0;
+        public static string UserId = string.Empty;
+        public static MobileServiceClient MobileServiceClient = new MobileServiceClient("https://emsaevernotecloneapp.azurewebsites.net");
 
         protected override void OnStartup(StartupEventArgs e)
         {

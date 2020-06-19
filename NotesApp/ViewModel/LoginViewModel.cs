@@ -46,25 +46,37 @@ namespace NotesApp.ViewModel
             }
         }
 
-        public void Register()
+        public async void RegisterAsync()
         {
-            using (SQLite.SQLiteConnection conn = new SQLite.SQLiteConnection(DatabaseHelper.dbFile))
+            //using (SQLite.SQLiteConnection conn = new SQLite.SQLiteConnection(DatabaseHelper.dbFile))
+            //{
+            //    conn.CreateTable<Users>();
+            //    try
+            //    {
+            //        var res = DatabaseHelper.Insert(User);
+            //        if (res)
+            //        {
+            //            App.UserId = User.Id;
+            //            HasLoggedIn?.Invoke(this, new EventArgs());
+            //        }
+            //    }catch(Exception e)
+            //    {
+            //        // manage, for example, registering same email...
+            //        // add password recovery...
+            //        App.UserId = 0;
+            //    }
+            //}
+
+            try
             {
-                conn.CreateTable<Users>();
-                try
-                {
-                    var res = DatabaseHelper.Insert(User);
-                    if (res)
-                    {
-                        App.UserId = User.Id;
-                        HasLoggedIn?.Invoke(this, new EventArgs());
-                    }
-                }catch(Exception e)
-                {
-                    // manage, for example, registering same email...
-                    // add password recovery...
-                    App.UserId = 0;
-                }
+                var table = App.MobileServiceClient.GetTable<Users>();
+                await table.InsertAsync(User);
+                App.UserId = User.Id;
+                HasLoggedIn?.Invoke(this, new EventArgs());
+            }
+            catch (Exception e)
+            {
+
             }
         }
     }

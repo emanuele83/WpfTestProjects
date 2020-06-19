@@ -1,8 +1,10 @@
-﻿using NotesApp.ViewModel;
+﻿using Microsoft.WindowsAzure.Storage;
+using NotesApp.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Speech.Recognition;
 using System.Text;
 using System.Threading;
@@ -54,16 +56,23 @@ namespace NotesApp.View
             fontSizeComboBox.ItemsSource = new List<double> { 8, 9, 10, 11, 12, 16, 20 };
         }
 
-        private void NoteViewModel_NoteChanged(object sender, NoteChangedEventArgs e)
+        private async void NoteViewModel_NoteChanged(object sender, NoteChangedEventArgs e)
         {
             noteText.Document.Blocks.Clear();
             if (!string.IsNullOrEmpty(noteViewModel.SelectedNote.FileLocation))
             {
-                using (FileStream fileStream = new FileStream(noteViewModel.SelectedNote.FileLocation, FileMode.Open))
+                using(HttpClient client = new HttpClient())
                 {
+                    var response = await client.GetAsync(noteViewModel.SelectedNote.FileLocation);
+                    Stream fileStream = await response.Content.ReadAsStreamAsync();
                     var range = new TextRange(noteText.Document.ContentStart, noteText.Document.ContentEnd);
                     range.Load(fileStream, DataFormats.Rtf);
                 }
+                //using (FileStream fileStream = new FileStream(noteViewModel.SelectedNote.FileLocation, FileMode.Open))
+                //{
+                //    var range = new TextRange(noteText.Document.ContentStart, noteText.Document.ContentEnd);
+                //    range.Load(fileStream, DataFormats.Rtf);
+                //}
             }
         }
 
@@ -92,7 +101,7 @@ namespace NotesApp.View
         {
             base.OnActivated(e);
 
-            //if(App.UserId == 0)
+            //if (App.UserId == string.Empty)
             //{
             //    LoginView loginView = new LoginView();
             //    loginView.ShowDialog();
@@ -165,16 +174,37 @@ namespace NotesApp.View
             noteText.Selection.ApplyPropertyValue(Inline.FontSizeProperty, fontSizeComboBox.Text);
         }
 
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            var filePath = System.IO.Path.Combine(Environment.CurrentDirectory, $"{noteViewModel.SelectedNote.Id}.rtf");
-            noteViewModel.SelectedNote.FileLocation = filePath;
-            using (FileStream fileStream = new FileStream(noteViewModel.SelectedNote.FileLocation, FileMode.Create))
+            string fileName = $"{noteViewModel.SelectedNote.Id}.rtf";
+            var filePath = System.IO.Path.Combine(Environment.CurrentDirectory, fileName);
+            //noteViewModel.SelectedNote.FileLocation = filePath;       // saved in the cloud
+
+            using (FileStream fileStream = new FileStream(filePath, FileMode.Create))
             {
                 var range = new TextRange(noteText.Document.ContentStart, noteText.Document.ContentEnd);
                 range.Save(fileStream, DataFormats.Rtf);
             }
+            string fileUrl = await UploadFileAsync(filePath, fileName);
+            noteViewModel.SelectedNote.FileLocation = fileUrl;
             noteViewModel.UpdateNote();
+        }
+
+        private async Task<string> UploadFileAsync(string rtfFileLocation, string fileName)
+        {
+            string fileUrl = string.Empty;
+            var account = CloudStorageAccount.Parse("DefaultEndpointsProtocol=https;AccountName=evernoteclone;AccountKey=cIFeJOa1GH/s3c1R4EYDoy728Zma/0ab37FVGinyEVAUpSpX5nJ34T1Y4a9Z5popO+KFE5WVT522Pbius+oYng==;EndpointSuffix=core.windows.net");
+            var client = account.CreateCloudBlobClient();
+            var container = client.GetContainerReference("notes");
+            await container.CreateIfNotExistsAsync();
+            var blob = container.GetBlockBlobReference(fileName);
+
+            using(FileStream stream = new FileStream(rtfFileLocation, FileMode.Open))
+            {
+                await blob.UploadFromStreamAsync(stream);
+                fileUrl = blob.Uri.OriginalString;
+            }
+            return fileUrl;
         }
     }
 }
