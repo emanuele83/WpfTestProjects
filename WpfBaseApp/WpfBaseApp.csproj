@@ -76,7 +76,7 @@
     </Compile>
     <Compile Include="Command\RelayCommand.cs" />
     <Compile Include="Event\EventArgs.cs" />
-    <Compile Include="Event\EventRaiser.cs" />
+    <Compile Include="Common\EventRaiser.cs" />
     <Compile Include="Interface\IPageViewModel.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

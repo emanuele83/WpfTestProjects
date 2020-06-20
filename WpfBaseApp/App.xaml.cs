@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using WpfBaseApp.ViewModel;
 
 namespace WpfBaseApp
@@ -17,6 +11,8 @@ namespace WpfBaseApp
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            // login?
 
             MainWindow app = new MainWindow();
             MainWindowViewModel context = new MainWindowViewModel();

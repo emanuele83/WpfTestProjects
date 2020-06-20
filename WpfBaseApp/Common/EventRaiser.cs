@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using WpfBaseApp.Event;
 
-namespace WpfBaseApp.Event
+namespace WpfBaseApp.Common
 {
     public static class EventRaiser
     {
