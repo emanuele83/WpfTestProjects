@@ -11,7 +11,7 @@ using System.Xml.Serialization;
 namespace RssReader.ViewModel
 {
 
-    public class RssHelper
+    public class RssHelper : IRssHelper
     {
         public static async Task<List<Item>> GetPostsAsync()
         {
@@ -40,6 +40,18 @@ namespace RssReader.ViewModel
                     await response.Content.CopyToAsync(fs);
                 }
             }
+        }
+
+        public List<Item> GetPosts()
+        {
+            List<Item> posts = new List<Item>();
+
+            posts.Add(new Item()
+            {
+                Title = new CData() { ActualString = "Real" }
+            });
+
+            return posts;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RssReader.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +14,12 @@ namespace RssReader
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            DependencyInjector.Register<IRssHelper, RssHelper>();
+            // the main window contains a property with the [Dependency] attribute which requires a IRssHelper type
+            MainWindow = DependencyInjector.Retrieve<MainWindow>();
+            MainWindow.Show();
+        }
     }
 }

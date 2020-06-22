@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RssReader.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Unity;
 
 namespace RssReader
 {
@@ -20,6 +22,16 @@ namespace RssReader
     /// </summary>
     public partial class MainWindow : Window
     {
+        // the attribute is used from retrieve method of dependency injector to find the required registered type
+        [Dependency]
+        public MainVM ViewModel
+        {
+            set
+            {
+                DataContext = value;
+            }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
